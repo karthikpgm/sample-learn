@@ -1,6 +1,10 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 export default function (props) {
+    const navigate = useNavigate();
+
     // const {loginUser, wait, loggedInCheck} = useContext(UserContext);
     const [redirect, setRedirect] = useState(false);
     const [errMsg, setErrMsg] = useState(false);
@@ -16,32 +20,38 @@ export default function (props) {
         })
     }
 
+    
     const submitForm = async (e) => {
         e.preventDefault();
+
+          // Create a new FormData object and append user input data
+        const fData = new FormData();
+        fData.append('email', formData.email);
+        fData.append('password', formData.password);
+
 
         if(!Object.values(formData).every(val => val.trim() !== '')){
             setErrMsg('Please Fill in all Required Fields!');
             return;
         }
-        loginRequest()
-        // const data = await loginUser(formData);
+        // loginRequest(fData)
+        const data = await loginRequest(fData);
         // console.log(data);
-        // if(data.success){
+        // if(data){
         //     e.target.reset();
         //     setRedirect('Redirecting...');
-        //     // await loggedInCheck();
+        // //     // await loggedInCheck();
         //     return;
         // }
         // setErrMsg("data.message");
     }
-    async function loginRequest() {
+    async function loginRequest(fdata) {
+
+        console.log(fdata)
         try {
           await fetch('http://localhost/Clapmaster/api_student/login', {
             method: 'POST',
-            body: JSON.stringify({
-              email: formData.email,
-              password: formData.password,
-            }),
+            body: fdata
           })
             .then((respose) => {
               if (respose.ok) {
@@ -50,10 +60,29 @@ export default function (props) {
               throw new Error('error')
             })
             .then((data) => {
-              if (data.status) {
-                localStorage.setItem('token', data.status)
-                // navigate('/')
-              } else {
+                if (data.validity == 1) 
+                {
+                    if(data.profile_category_type == "2" || data.profile_category_type == "3")
+                    {
+                        console.log(data);
+                        if (data.multi_profile == 1) 
+                        {
+                            navigate(`/multi-profile/${data.email}`);
+                        }
+                        else
+                        {
+                            localStorage.setItem('token', data.token)
+                        }
+                    }
+                    else
+                    {
+                        alert('Please try to login at your school.');
+                        return;
+                    }
+                    // navigate('/')
+              } 
+              else 
+              {
                 //set error
               }
             })
@@ -71,7 +100,7 @@ export default function (props) {
           <div className="form-group mt-3">
             <label>Email address</label>
             <input
-              type="email" name="email"  onChange={onChangeInput} 
+              type="email" name="email"  onChange={onChangeInput}
               className="form-control mt-1"
               placeholder="Enter email" id="email" value={formData.email}
             />
@@ -87,10 +116,8 @@ export default function (props) {
             />
           </div>
           <div className="d-grid gap-2 mt-3">
-            <button type="submit" className="btn btn-primary">
-              Submit
-            </button>
-          </div>
+          {redirect ? redirect : <button type="submit" className="btn btn-primary">Login</button>}
+           </div>
           <p className="forgot-password text-right mt-2">
             Forgot <a href="#">password?</a>
           </p>
