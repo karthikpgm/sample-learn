@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Auth from "./components/Auth";
 import ProfileSwitcher from './components/ProfileSwitcher';
 import Home from './components/Home';
+import Dashboard from './components/Dashboard';
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
       <Route path="/" element={<Auth />} />
       <Route path="/multi-profile/:email" element={<ProfileSwitcher />} />
       <Route path="/home" element={<Home/>} />
+      <Route path="/dashboard" element={<Dashboard/>} />
       </Routes>
     </BrowserRouter>
   )

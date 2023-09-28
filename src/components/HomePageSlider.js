@@ -1,34 +1,46 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'jquery/dist/jquery.min.js';
 import 'popper.js/dist/umd/popper.min.js';
 import 'bootstrap/dist/js/bootstrap.min.js';
 
 function HomePageSlider() {
+    const [images, setImages] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const fData = new FormData();
+    fData.append('auth_token',localStorage.getItem('token'));
+
+    useEffect(() => {
+      // Replace 'apiEndpoint' with the actual API endpoint that provides image URLs
+      fetch('http://localhost/Clapmaster/api_student/home_fetch_details', {
+        method: 'POST',
+        body: fData
+      })
+      .then((response) => response.json())
+        .then((data) => {
+            console.log(data.slider_classes);
+          setImages(data.slider_classes); // Assuming the API response is an array of image URLs
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error('Error fetching images:', error);
+          setLoading(false);
+        });
+    }, []);
+  
+    if (loading) {
+      return <p>Loading...</p>;
+    }
+  
   return (
     <div id="home-slider" className="carousel slide" data-bs-ride="carousel">
-      <div className="carousel-inner">
-        <div className="carousel-item active">
-          <img
-                src="https://via.placeholder.com/500"
-            className="d-block w-100"
-            alt="Image 1"
-          />
+      <div className="carousel-inner">      
+      {images.map((item, index) => ( 
+        <div className={`carousel-item ${index === 0 ? 'active' : ''}`} key={index}> 
+            <img   src={`https://ulipsutest.s3.ap-south-1.amazonaws.com/uploads/classes/thumbnail/optimized/${item.class_thumbnail}`} className="d-block w-100" alt={`Image ${index}`} />
         </div>
-        <div className="carousel-item">
-          <img
-                src="https://via.placeholder.com/500"
-            className="d-block w-100"
-            alt="Image 2"
-          />
-        </div>
-        <div className="carousel-item">
-          <img
-                src="https://via.placeholder.com/500"
-            className="d-block w-100"
-            alt="Image 3"
-          />
-        </div>
+        ))}
+            
       </div>
       <a
         className="carousel-control-prev"
