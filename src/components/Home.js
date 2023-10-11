@@ -1,11 +1,11 @@
 import React from 'react';
 import HomePageSlider from './HomePageSlider';
-import CertificationProgram from './CertificationProgram';
+import HomeCertificationProgram from './HomeCertificationProgram';
 function Home() {
   return (
     <div>
       <HomePageSlider />
-      <CertificationProgram />
+      <HomeCertificationProgram />
     </div>
   );
 }

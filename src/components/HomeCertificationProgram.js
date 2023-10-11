@@ -5,7 +5,8 @@ import 'popper.js/dist/umd/popper.min.js';
 import 'bootstrap/dist/js/bootstrap.min.js';
 import '../App.css'
 import { Link } from 'react-router-dom';
-function CertificationProgram() {
+
+function HomeCertificationProgram() {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const fData = new FormData();
@@ -15,7 +16,7 @@ function CertificationProgram() {
     fData.append('platform',2);
     useEffect(() => {
       // Replace 'apiEndpoint' with the actual API endpoint that provides image URLs
-      const apiUrl = `${process.env.REACT_APP_BASE_URL}/api_user/fetch_certification_by_themes`;
+      const apiUrl = `${process.env.REACT_APP_BASE_URL}/api_user/home_school_certifications`;
       fetch(apiUrl, {
         method: 'POST',
         body: fData
@@ -50,13 +51,13 @@ function CertificationProgram() {
             <div className="main-timeline4">
             {data.map((item, index) => (
              <div key={index} className="timeline">
-                  <Link to={`/program-detail/${item.theme_id}`} className="timeline-content">
+                 <Link to={`/program-detail/${item.theme_id}`} className="timeline-content">
                     <span className="year">{item.title}</span>
                     <div className="inner-content">
                     <h3 className="title"></h3>
                     <p className="description">{item.is_unlocked}</p>
                     </div>
-                 </Link>
+                  </Link>
             </div>
             ))}
 
@@ -67,4 +68,4 @@ function CertificationProgram() {
   );
 }
 
-export default CertificationProgram;
+export default HomeCertificationProgram;

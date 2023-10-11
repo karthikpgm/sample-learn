@@ -12,7 +12,9 @@ function HomePageSlider() {
 
     useEffect(() => {
       // Replace 'apiEndpoint' with the actual API endpoint that provides image URLs
-      fetch('http://localhost/Clapmaster/api_student/home_fetch_details', {
+      const apiUrl = `${process.env.REACT_APP_BASE_URL}/api_student/home_fetch_details`;
+
+      fetch(apiUrl, {
         method: 'POST',
         body: fData
       })
@@ -37,7 +39,7 @@ function HomePageSlider() {
       <div className="carousel-inner">      
       {images.map((item, index) => ( 
         <div className={`carousel-item ${index === 0 ? 'active' : ''}`} key={index}> 
-            <img   src={`https://ulipsutest.s3.ap-south-1.amazonaws.com/uploads/classes/thumbnail/optimized/${item.class_thumbnail}`} className="d-block w-100" alt={`Image ${index}`} />
+            <img src={`https://ulipsu.s3.ap-south-1.amazonaws.com/uploads/classes/thumbnail/optimized/${item.class_thumbnail}`} className="d-block w-100" alt={`Image ${index}`} />
         </div>
         ))}
             

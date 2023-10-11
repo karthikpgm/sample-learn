@@ -6,12 +6,12 @@ function Rank(props) {
     <div className='rank'>
       <div className='rank-profile'>
         <div className='rank-img'>
-            <img src='' alt='test'></img>
+            <img src={`${process.env.REACT_APP_BASE_URL}/uploads/user_images/optimized/${props.data.photo}`} alt='test'></img>
             <h4>{props.data.name}</h4>
         </div>
         <div className='rank-badge'>
-          <img src='' alt='test'></img>
-          <h4>{props.data.rank_level}</h4>
+          <img src={props.data.rank_image} alt='test'></img>
+          <h4>{props.rank.rank_level}</h4>
         </div>
       </div>
       <div className="row">

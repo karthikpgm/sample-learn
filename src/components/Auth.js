@@ -46,10 +46,11 @@ export default function (props) {
         // setErrMsg("data.message");
     }
     async function loginRequest(fdata) {
-
+       const apiUrl = `${process.env.REACT_APP_BASE_URL}/api_student/login`;
+      console.log(apiUrl);
         console.log(fdata)
         try {
-          await fetch('http://localhost/Clapmaster/api_student/login', {
+          await fetch(apiUrl, {
             method: 'POST',
             body: fdata
           })
@@ -72,7 +73,8 @@ export default function (props) {
                         else
                         {
                             localStorage.setItem('token', data.token)
-                            localStorage.setItem('user_id'.data.user_id);
+                            localStorage.setItem('user_id',data.user_id);
+                            localStorage.setItem('class',data.class);
                         }
                     }
                     else

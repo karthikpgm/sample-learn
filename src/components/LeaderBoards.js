@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 function LeaderBoards(props) 
 {
-  console.log(props.data)
   return (
     <div className="container">
       <div className="row">

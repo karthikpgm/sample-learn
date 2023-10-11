@@ -14,8 +14,10 @@ function ProfileSwitcher() {
     {
         const fData = new FormData();
         fData.append('user_id', e);
+        const apiUrl = `${process.env.REACT_APP_BASE_URL}/api_student/generate_multi_profile_token`;
+
         try {
-          await fetch('http://localhost/Clapmaster/api_student/generate_multi_profile_token', {
+          await fetch(apiUrl, {
             method: 'POST',
             body: fData
           })
@@ -28,6 +30,7 @@ function ProfileSwitcher() {
             .then((data) => {
                 localStorage.setItem('token', data.token)
                 localStorage.setItem('user_id', data.user_id)
+                localStorage.setItem('class',data.class);
                 navigate(`/home`);
 
             })
@@ -39,7 +42,8 @@ function ProfileSwitcher() {
         const fData = new FormData();
         fData.append('email', email);
         try {
-          await fetch('http://localhost/Clapmaster/api_user/fetch_multiple_profiles', {
+          const apiUrl = `${process.env.REACT_APP_BASE_URL}/api_user/fetch_multiple_profiles`;
+          await fetch(apiUrl, {
             method: 'POST',
             body: fData
           })
